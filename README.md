@@ -11,3 +11,4 @@ Instrumenting the Go http.Client with a custom http.RoundTripper, http.Transport
 * [Middleware Pipeline](https://github.com/jobala/middleware_pipeline)
 * [go-httpwares](https://github.com/improbable-eng/go-httpwares)
 * [Add header to every request](https://developer20.com/add-header-to-every-request-in-go/)
+* [How To Reuse Http Connections In Go](https://golang.cafe/blog/how-to-reuse-http-connections-in-go.html)
