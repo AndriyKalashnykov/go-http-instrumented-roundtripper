@@ -1,3 +1,3 @@
-# go-http-instrumented-roundtrip
+# go-http-instrumented-roundtripper
 
-Instrumenting the http.Client by creating a custom http.RoundTripper that wraps the default http.Transport and net.Dialer.
+Instrumenting the Go http.Client with a custom http.RoundTripper, http.Transport and net.Dialer.
