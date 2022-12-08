@@ -40,7 +40,7 @@ func newTransport() *customTransport {
 		DialContext:         tr.dialContext,
 		TLSHandshakeTimeout: 10 * time.Second,
 		TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
-		DisableKeepAlives:   false, // false = reuse connection
+		DisableKeepAlives:   true, // false = reuse connection
 	}
 	return tr
 }
@@ -62,6 +62,7 @@ func (tr *customTransport) dialContext(context context.Context, network, addr st
 	tr.connStart = time.Now()
 	cn, err := tr.dialer.DialContext(context, network, addr)
 	tr.connEnd = time.Now()
+	log.Println("dialContext")
 	return cn, err
 }
 
