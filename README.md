@@ -2,7 +2,7 @@
 
 Instrumenting the Go http.Client with a custom http.RoundTripper, http.Transport and net.Dialer.
 
-# Links
+### Links
 
 * [HTTP client middleware in Go](https://echorand.me/posts/go-http-client-middleware/)
 * [A Go http.RoundTripper that exports request statistics via Prometheus](https://github.com/linki/instrumented_http)
