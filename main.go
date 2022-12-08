@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/tls"
 	"flag"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -37,12 +36,11 @@ func newTransport() *customTransport {
 		},
 	}
 	tr.rtp = &http.Transport{
-		Proxy: http.ProxyFromEnvironment,
-		//Dial:                tr.dial,
+		Proxy:               http.ProxyFromEnvironment,
 		DialContext:         tr.dialContext,
 		TLSHandshakeTimeout: 10 * time.Second,
 		TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
-		DisableKeepAlives:   true,
+		DisableKeepAlives:   false, // false = reuse connection
 	}
 	return tr
 }
@@ -101,15 +99,11 @@ func MakeHttpCall(client *http.Client, req *http.Request, url string) {
 }
 
 func main() {
-
 	flag.BoolVar(&Show, "show", true, "Display the response content")
 	flag.Parse()
 
-	//url := flag.Args()[0]
-	//url := "http://localhost:1338/hello"
 	url := "https://httpbin.org/get"
-
-	fmt.Println("URL:", url)
+	log.Println("URL:", url)
 
 	tp = newTransport()
 	client = &http.Client{Transport: tp}
