@@ -14,3 +14,4 @@ Instrumenting the Go http.Client with a custom http.RoundTripper, http.Transport
 * [How To Reuse Http Connections In Go](https://golang.cafe/blog/how-to-reuse-http-connections-in-go.html)
 * [How to customize http.Client or http.Transport in Go to retry after timeout?](https://stackoverflow.com/questions/62900451/how-to-customize-http-client-or-http-transport-in-go-to-retry-after-timeout)
 * [Cached Rouundtripper](https://lanre.wtf/blog/2017/07/24/roundtripper-go/)
+* [NewHTTPClientWithSettings AWS](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/custom-http.html)
