@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"flag"
 	"io"
 	"io/ioutil"
@@ -19,12 +20,15 @@ var tp *customTransport
 var client *http.Client
 
 type customTransport struct {
-	rtp       http.RoundTripper
-	dialer    *net.Dialer
-	connStart time.Time
-	connEnd   time.Time
-	reqStart  time.Time
-	reqEnd    time.Time
+	rtp        http.RoundTripper
+	dialer     *net.Dialer
+	connStart  time.Time
+	connEnd    time.Time
+	reqStart   time.Time
+	reqEnd     time.Time
+	reqReties  int
+	reqDelay   time.Duration //Millisecond
+	reqTimeout time.Duration
 }
 
 func newTransport() *customTransport {
@@ -34,6 +38,9 @@ func newTransport() *customTransport {
 			Timeout:   30 * time.Second,
 			KeepAlive: 30 * time.Second,
 		},
+		reqReties:  5,
+		reqDelay:   100,
+		reqTimeout: 1,
 	}
 	tr.rtp = &http.Transport{
 		Proxy:               http.ProxyFromEnvironment,
@@ -47,7 +54,21 @@ func newTransport() *customTransport {
 
 func (tr *customTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	tr.reqStart = time.Now()
-	resp, err := tr.rtp.RoundTrip(r)
+	var resp *http.Response
+	var err error
+
+	ctx, cancel := context.WithTimeout(context.Background(), tr.reqTimeout*time.Second)
+	defer cancel()
+	for i := 1; i <= tr.reqReties; i++ {
+		resp, err = tr.rtp.RoundTrip(r.WithContext(ctx))
+		if errors.Is(err, context.DeadlineExceeded) {
+			log.Printf("#%d got timeout will retry - %v", i, err)
+			time.Sleep(time.Duration(tr.reqDelay*time.Duration(i)) * time.Millisecond)
+			continue
+		} else {
+			break
+		}
+	}
 	tr.reqEnd = time.Now()
 	return resp, err
 }
@@ -62,7 +83,6 @@ func (tr *customTransport) dialContext(context context.Context, network, addr st
 	tr.connStart = time.Now()
 	cn, err := tr.dialer.DialContext(context, network, addr)
 	tr.connEnd = time.Now()
-	log.Println("dialContext")
 	return cn, err
 }
 
