@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"crypto/x509"
 	"errors"
 	"flag"
 	"io"
@@ -46,8 +47,10 @@ func newTransport() *customTransport {
 		Proxy:               http.ProxyFromEnvironment,
 		DialContext:         tr.dialContext,
 		TLSHandshakeTimeout: 10 * time.Second,
-		TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
-		DisableKeepAlives:   true, // false = reuse connection
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true, VerifyPeerCertificate: func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
+			return nil
+		}},
+		DisableKeepAlives: true, // false = reuse connection
 	}
 	return tr
 }
@@ -57,7 +60,7 @@ func (tr *customTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	var resp *http.Response
 	var err error
 
-	ctx, cancel := context.WithTimeout(context.Background(), tr.reqTimeout*time.Second)
+	ctx, cancel := context.WithTimeout(r.Context(), tr.reqTimeout*time.Second)
 	defer cancel()
 	for i := 1; i <= tr.reqReties; i++ {
 		resp, err = tr.rtp.RoundTrip(r.WithContext(ctx))

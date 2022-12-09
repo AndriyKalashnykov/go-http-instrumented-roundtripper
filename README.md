@@ -2,6 +2,25 @@
 
 Instrumenting the Go http.Client with a custom http.RoundTripper, http.Transport and net.Dialer.
 
+## Requirements
+* [gvm](https://github.com/moovweb/gvm) Go 1.19
+    ```bash
+    gvm install go1.19 --prefer-binary --with-build-tools --with-protobuf
+    gvm use go1.19 --default
+    ```
+## Help
+
+```text
+Usage: make COMMAND
+Commands :
+help   - List available tasks
+clean  - Cleanup
+get    - Download and install dependency packages
+update - Update dependencies to latest versions
+test   - Run tests
+build  - Build qleetctl binary
+```
+
 ### Links
 
 * [HTTP client middleware in Go](https://echorand.me/posts/go-http-client-middleware/)
@@ -17,3 +36,4 @@ Instrumenting the Go http.Client with a custom http.RoundTripper, http.Transport
 * [Cached Roundtripping](https://github.com/adelowo/rounder)
 * [NewHTTPClientWithSettings AWS](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/custom-http.html)
 * [dynamically change the content of the upstream response?](https://forum.golangbridge.org/t/how-to-build-an-http-reverse-proxy-to-dynamically-change-the-content-of-the-upstream-response/1313)
+* [RoundTrip Retry implementation](https://github.com/turbot/steampipe-plugin-datadog/blob/main/datadog/custom_transport.go)
