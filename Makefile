@@ -27,10 +27,10 @@ test:
 	@export GOPRIVATE=$(GOPRIVATE); go generate
 	@export GOPRIVATE=$(GOPRIVATE); export GOFLAGS=$(GOFLAGS); go test $(go list ./... | grep -v /internal/setup)
 
-#build: @ Build qleetctl binary
+#build: @ Build binary
 build:
 	@export GOPRIVATE=$(GOPRIVATE); go generate
-	@export GOPRIVATE=$(GOPRIVATE); export GOFLAGS=$(GOFLAGS); export CGO_ENABLED=0; go build -a -o qleetctl main.go
+	@export GOPRIVATE=$(GOPRIVATE); export GOFLAGS=$(GOFLAGS); export CGO_ENABLED=0; go build -a -o main main.go
 
 release: build
 	$(eval NT=$(NEWTAG))

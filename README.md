@@ -18,7 +18,7 @@ clean  - Cleanup
 get    - Download and install dependency packages
 update - Update dependencies to latest versions
 test   - Run tests
-build  - Build qleetctl binary
+build  - Build binary
 ```
 
 ### Links
