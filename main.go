@@ -40,8 +40,8 @@ func newTransport() *customTransport {
 			KeepAlive: 30 * time.Second,
 		},
 		reqReties:  5,
-		reqDelay:   100,
-		reqTimeout: 1,
+		reqDelay:   5,
+		reqTimeout: 100,
 	}
 	tr.rtp = &http.Transport{
 		Proxy:               http.ProxyFromEnvironment,
@@ -126,7 +126,8 @@ func main() {
 	flag.BoolVar(&Show, "show", true, "Display the response content")
 	flag.Parse()
 
-	url := "https://httpbin.org/get"
+	url := "http://echo.jsontest.com/title/ipsum/content/blah"
+	//url := "https://httpbin.org/get"
 	log.Println("URL:", url)
 
 	tp = newTransport()
